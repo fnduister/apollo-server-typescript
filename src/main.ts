@@ -1,16 +1,19 @@
-console.log('Hello World!, im very new here and paris in montreal');
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server'
+import environment from './environment'
+import resolvers from './resolvers/resolvers'
+import typeDefs from './schemas/type-defs'
 
-import resolvers from './resolvers/resolvers';
-import typeDefs from './type-defs';
+const server = new ApolloServer({
+  resolvers,
+  typeDefs,
+  introspection: environment.apollo.introspection,
+  playground: environment.apollo.playground
+})
 
-const server = new ApolloServer({ resolvers, typeDefs });
+server.listen(environment.port)
+  .then(({ url }) => console.log(`Server ready at ${url}. `))
 
-server.listen()
-    .then(({ url }) => console.log(`Server ready at ${url}. `));
-
-// Hot Module Replacement
 if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => console.log('Module disposed. '));
+  module.hot.accept()
+  module.hot.dispose(() => server.stop())
 }
