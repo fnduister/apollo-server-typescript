@@ -9,14 +9,24 @@ type User {
   id: ID!
 
   """
-  User's first name.
+  User's username.
   """
-  firstName: String!
+  username: String!
 
   """
   User's email address.
   """
   email: EmailAddress!
+
+  """
+  User's password.
+  """
+  password: String!
+
+  """
+  Date last seen.
+  """
+  lastSeen: DateTime!
 
   """
   User's last name.

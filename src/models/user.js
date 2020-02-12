@@ -5,30 +5,42 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: {
     type: String,
-    required: true,
+    required: true
   },
 
   password: {
     type: String,
-    required: true,
+    required: true
   },
 
   lastSeen: {
     type: Date,
-    required: true,
+    required: true
   },
 
   email: {
     type: String,
-    required: true,
+    required: true
   },
 
-  createdEvents: [
+  posts: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Event',
-    },
+      ref: 'Post'
+    }
   ],
+  following: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
+  followers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ]
 });
 
 module.exports = mongoose.model('User', userSchema);
