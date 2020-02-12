@@ -5,7 +5,10 @@ interface Environment {
         introspection: boolean,
         playground: boolean
     },
-    port: number | string;
+  port: number | string;
+  mongoUsername: string| undefined;
+  mongoPassword: string| undefined;
+  mongoDatabaseName: string| undefined;
 }
 
 const environment: Environment = {
@@ -13,7 +16,10 @@ const environment: Environment = {
     introspection: process.env.APOLLO_INTROSPECTION === 'true',
     playground: process.env.APOLLO_PLAYGROUND === 'true'
   },
-  port: process.env.PORT || defaultPort
+  port: process.env.PORT || defaultPort,
+  mongoUsername: process.env.MONGO_USER,
+  mongoPassword: process.env.MONGO_PASSWORD,
+  mongoDatabaseName: process.env.MONGO_DB_NAME
 };
 
 export default environment;

@@ -11,6 +11,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "@types/mongodb": "^3.3.16",
+    "@types/mongoose": "^5.7.1",
     "@types/webpack-env": "^1.15.1",
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
@@ -35,6 +38,12 @@
   },
   "dependencies": {
     "apollo-server": "^2.10.0",
-    "graphql": "^14.6.0"
+    "bcrypt": "^3.0.8",
+    "cors": "^2.8.5",
+    "graphql": "^14.6.0",
+    "graphql-scalars": "^1.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.3",
+    "mongoose": "^5.8.11"
   }
 }
