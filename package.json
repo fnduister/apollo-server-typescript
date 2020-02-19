@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack/webpack.development.js",
-    "start": "node --require dotenv/config dist/server"
+    "start": "node --require dotenv/config dist/server",
+    "prebuild": "graphql-codegen --config .graphqlrc.yml"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "fabrice Ndui"
+  },
   "license": "ISC",
   "devDependencies": {
-    "@types/graphql": "^14.5.0",
+    "@graphql-codegen/cli": "^1.12.2",
+    "@graphql-codegen/typescript": "1.12.2",
     "@types/mongodb": "^3.3.16",
     "@types/mongoose": "^5.7.1",
     "@types/webpack-env": "^1.15.1",
@@ -34,17 +38,22 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-merge": "^4.2.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "@graphql-codegen/typescript-resolvers": "1.12.2",
+    "@graphql-codegen/typescript-mongodb": "1.12.2",
+    "@graphql-codegen/typescript-document-nodes": "1.12.2",
+    "@graphql-codegen/introspection": "1.12.2"
   },
   "dependencies": {
-    "@graphql-modules/core": "^0.7.14",
     "apollo-server": "^2.10.0",
     "bcrypt": "^3.0.8",
     "cors": "^2.8.5",
     "graphql": "^14.6.0",
+    "graphql-config": "^3.0.0-alpha.17",
     "graphql-scalars": "^1.0.6",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.3",
     "mongoose": "^5.8.11"
-  }
+  },
+  "private": true
 }

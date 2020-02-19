@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server';
+import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import environment from './environment';
 import * as typeDefs from './schemas/type-defs.graphql';
 import resolvers from './resolvers';
@@ -11,7 +12,7 @@ import {
 
 const server = new ApolloServer({
   resolvers,
-  typeDefs,
+  typeDefs: [DIRECTIVES, typeDefs],
   introspection: environment.apollo.introspection,
   mocks: {
     DateTime: DateTimeMock,
