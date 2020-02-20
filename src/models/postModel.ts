@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
@@ -18,15 +18,17 @@ const postSchema = new Schema({
     required: true
   },
 
-  likedBy: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+  likedBy: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'UserModel'
+    }
+  ],
 
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'UserModel'
   }
 });
 
-module.exports = mongoose.model('Post', postSchema);
+export default mongoose.model('PostModel', postSchema);

@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose, { Document } from 'mongoose';
+// eslint-disable-next-line no-unused-vars
+import { UserDbObject } from '../generated/graphql';
 
 const Schema = mongoose.Schema;
 
@@ -26,21 +28,23 @@ const userSchema = new Schema({
   posts: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Post'
+      ref: 'PostModel'
     }
   ],
   following: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'UserModel'
     }
   ],
   followers: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'UserModel'
     }
   ]
 });
 
-module.exports = mongoose.model('User', userSchema);
+export interface IUser extends UserDbObject, Document {}
+
+export default mongoose.model('UserModel', userSchema);

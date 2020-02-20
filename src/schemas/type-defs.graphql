@@ -109,11 +109,50 @@ input PublishPostInput {
   content: String!
 }
 
+type AuthData {
+  """
+  jwt token for authentication.
+  """
+  token: String!
+
+  """
+  expiration time for the jwt token.
+  """
+  tokenExpiration: Int!
+
+  """
+  user identification.
+  """
+  userId: ID!
+}
+
+input UserInput {
+  """
+  user's username.
+  """
+  username: String!
+
+  """
+  user's password.
+  """
+  password: String
+
+  """
+  user's email.
+  """
+  email: String!
+}
+
 type Mutation {
   """
   Publish post.
   """
   publishPost(input: PublishPostInput!): Post!
+
+  """
+  create new user.
+  """
+  createUser(userInput: UserInput): User
 
   """
   Follow user.

@@ -1,7 +1,4 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { ObjectID } from 'mongodb';
-
-import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -16,43 +13,74 @@ export type Scalars = {
   UnsignedInt: any,
 };
 
+
+
+
+
+
+
+
+
 export type AdditionalEntityFields = {
   path?: Maybe<Scalars['String']>,
   type?: Maybe<Scalars['String']>,
 };
 
+export type AuthData = {
+   __typename?: 'AuthData',
+  /** jwt token for authentication. */
+  token: Scalars['String'],
+  /** expiration time for the jwt token. */
+  tokenExpiration: Scalars['Int'],
+  /** user identification. */
+  userId: Scalars['ID'],
+};
+
+
+
 export type Mutation = {
    __typename?: 'Mutation',
   /** Publish post. */
   publishPost: Post,
-  /**
+  /** create new user. */
+  createUser?: Maybe<User>,
+  /** 
  * Follow user.
    * Returns the updated number of followers.
  */
   followUser: Scalars['Int'],
-  /**
+  /** 
  * Unfollow user.
    * Returns the updated number of followers.
  */
   unfollowUser: Scalars['UnsignedInt'],
-  /**
+  /** 
  * Like post.
    * Returns the updated number of likes received.
  */
   likePost: Scalars['Int'],
 };
 
+
 export type MutationPublishPostArgs = {
   input: PublishPostInput
 };
+
+
+export type MutationCreateUserArgs = {
+  userInput?: Maybe<UserInput>
+};
+
 
 export type MutationFollowUserArgs = {
   userId: Scalars['ID']
 };
 
+
 export type MutationUnfollowUserArgs = {
   userId: Scalars['ID']
 };
+
 
 export type MutationLikePostArgs = {
   postId: Scalars['ID']
@@ -88,9 +116,11 @@ export type Query = {
   post?: Maybe<Post>,
 };
 
+
 export type QueryPostArgs = {
   id: Scalars['ID']
 };
+
 
 export type User = {
    __typename?: 'User',
@@ -114,6 +144,17 @@ export type User = {
   followers: Array<Maybe<User>>,
 };
 
+export type UserInput = {
+  /** user's username. */
+  username: Scalars['String'],
+  /** user's password. */
+  password?: Maybe<Scalars['String']>,
+  /** user's email. */
+  email: Scalars['String'],
+};
+
+
+
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
@@ -122,6 +163,7 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   context: TContext,
   info: GraphQLResolveInfo
 ) => Promise<TResult> | TResult;
+
 
 export type StitchingResolver<TResult, TParent, TContext, TArgs> = {
   fragment: string;
@@ -193,9 +235,11 @@ export type ResolversTypes = {
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>,
   Mutation: ResolverTypeWrapper<{}>,
   PublishPostInput: PublishPostInput,
+  UserInput: UserInput,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+  AuthData: ResolverTypeWrapper<AuthData>,
   AdditionalEntityFields: AdditionalEntityFields,
 };
 
@@ -210,46 +254,55 @@ export type ResolversParentTypes = {
   DateTime: Scalars['DateTime'],
   Mutation: {},
   PublishPostInput: PublishPostInput,
+  UserInput: UserInput,
   Int: Scalars['Int'],
   UnsignedInt: Scalars['UnsignedInt'],
   Boolean: Scalars['Boolean'],
+  AuthData: AuthData,
   AdditionalEntityFields: AdditionalEntityFields,
 };
 
-export type UnionDirectiveArgs = { discriminatorField?: Maybe<Scalars['String']>,
+export type UnionDirectiveArgs = {   discriminatorField?: Maybe<Scalars['String']>,
   additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>> };
 
 export type UnionDirectiveResolver<Result, Parent, ContextType = any, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AbstractEntityDirectiveArgs = { discriminatorField: Scalars['String'],
+export type AbstractEntityDirectiveArgs = {   discriminatorField: Scalars['String'],
   additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>> };
 
 export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = any, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type EntityDirectiveArgs = { embedded?: Maybe<Scalars['Boolean']>,
+export type EntityDirectiveArgs = {   embedded?: Maybe<Scalars['Boolean']>,
   additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>> };
 
 export type EntityDirectiveResolver<Result, Parent, ContextType = any, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type ColumnDirectiveArgs = { overrideType?: Maybe<Scalars['String']> };
+export type ColumnDirectiveArgs = {   overrideType?: Maybe<Scalars['String']> };
 
 export type ColumnDirectiveResolver<Result, Parent, ContextType = any, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type IdDirectiveArgs = { };
+export type IdDirectiveArgs = {  };
 
 export type IdDirectiveResolver<Result, Parent, ContextType = any, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type LinkDirectiveArgs = { overrideType?: Maybe<Scalars['String']> };
+export type LinkDirectiveArgs = {   overrideType?: Maybe<Scalars['String']> };
 
 export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type EmbeddedDirectiveArgs = { };
+export type EmbeddedDirectiveArgs = {  };
 
 export type EmbeddedDirectiveResolver<Result, Parent, ContextType = any, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type MapDirectiveArgs = { path: Scalars['String'] };
+export type MapDirectiveArgs = {   path: Scalars['String'] };
 
 export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type AuthDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthData'] = ResolversParentTypes['AuthData']> = {
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  tokenExpiration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime'
@@ -261,6 +314,7 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'input'>>,
+  createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationCreateUserArgs>,
   followUser?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationFollowUserArgs, 'userId'>>,
   unfollowUser?: Resolver<ResolversTypes['UnsignedInt'], ParentType, ContextType, RequireFields<MutationUnfollowUserArgs, 'userId'>>,
   likePost?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationLikePostArgs, 'postId'>>,
@@ -298,6 +352,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type Resolvers<ContextType = any> = {
+  AuthData?: AuthDataResolvers<ContextType>,
   DateTime?: GraphQLScalarType,
   EmailAddress?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
@@ -306,6 +361,7 @@ export type Resolvers<ContextType = any> = {
   UnsignedInt?: GraphQLScalarType,
   User?: UserResolvers<ContextType>,
 };
+
 
 /**
  * @deprecated
@@ -323,11 +379,13 @@ export type DirectiveResolvers<ContextType = any> = {
   map?: MapDirectiveResolver<any, any, ContextType>,
 };
 
+
 /**
 * @deprecated
 * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
 */
 export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<ContextType>;
+import { ObjectID } from 'mongodb';
 export type PostDbObject = {
   _id: ObjectID,
   title: string,
@@ -348,3 +406,5 @@ export type UserDbObject = {
   following: Array<Maybe<UserDbObject['_id']>>,
   followers: Array<Maybe<UserDbObject['_id']>>,
 };
+
+import gql from 'graphql-tag';
