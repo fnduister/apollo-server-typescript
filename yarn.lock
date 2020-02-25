@@ -1198,6 +1198,13 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
 
+"@types/jsonwebtoken@^8.3.7":
+  version "8.3.7"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.7.tgz#ab79ad55b9435834d24cca3112f42c08eedb1a54"
+  integrity sha512-B5SSifLkjB0ns7VXpOOtOUlynE78/hKcY8G8pOAhkLJZinwofIBYqz555nRj2W9iDWZqFhK5R+7NZDaRmKWAoQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/keygrip@*":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.2.tgz#513abfd256d7ad0bf1ee1873606317b33b1b2a72"
@@ -4178,6 +4185,26 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
+
+graphql-compose-connection@6.0.4:
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/graphql-compose-connection/-/graphql-compose-connection-6.0.4.tgz#857356e5fc4e7335bc6da62bd3bbfe9a257f00db"
+  integrity sha512-LSIdv3pqFbf+71xD3fAMRZq4GFtqHAYkLFE3RDdWWgsDaOWLuw/+5Dcva0+Di82VI0z9J98il9192bH5L4GNdw==
+
+graphql-compose-mongoose@^7.3.4:
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/graphql-compose-mongoose/-/graphql-compose-mongoose-7.3.4.tgz#52b7bb15730bf7151cd4a9b987402f7773410638"
+  integrity sha512-l/rnKRo3+esDOTdn10ilujvWpdmZnIH/q/lwcHjlvBfLOIAQxpi1MIL/6OMXp3cjFAFpgZxmCHDcCgJVsSn5nA==
+  dependencies:
+    object-path "^0.11.4"
+  optionalDependencies:
+    graphql-compose-connection "6.0.4"
+    graphql-compose-pagination "^6.0.3"
+
+graphql-compose-pagination@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/graphql-compose-pagination/-/graphql-compose-pagination-6.0.3.tgz#58a50c07226d055ecf01fdd5ab3f300f58598beb"
+  integrity sha512-XMiDSzLc/R13RXz2tpzWOQFTmkDZqVg6zSn3RBpoK2k9Ocg1JgfnIW3VeRw6vOG/Fm8dlWKzyBvQiicG33h8oQ==
 
 graphql-config@3.0.0-alpha.18:
   version "3.0.0-alpha.18"

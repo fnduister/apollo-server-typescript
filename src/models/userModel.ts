@@ -1,6 +1,5 @@
 import mongoose, { Document } from 'mongoose';
-// eslint-disable-next-line no-unused-vars
-import { UserDbObject } from '../generated/graphql';
+import { User } from '../generated/graphql';
 
 const Schema = mongoose.Schema;
 
@@ -45,6 +44,6 @@ const userSchema = new Schema({
   ]
 });
 
-export interface IUser extends UserDbObject, Document {}
-
-export default mongoose.model('UserModel', userSchema);
+export interface UserDb extends Omit<User, 'id'>, Document{
+};
+export default mongoose.model<UserDb>('UserModel', userSchema);

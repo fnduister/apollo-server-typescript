@@ -1,17 +1,14 @@
-// eslint-disable-next-line no-unused-vars
-import { User, UserInput, UserDbObject } from '../generated/graphql';
+import { UserInput, User } from '../generated/graphql';
 import bcrypt from 'bcryptjs';
 
-import UserModel, { IUser } from '../models/userModel';
-const jwt = require('jsonwebtoken');
+import UserModel from '../models/userModel';
+import jwt from 'jsonwebtoken';
 const { transformUser } = require('./merge');
 
 exports.users = async () => {
   // eslint-disable-next-line no-useless-catch
   try {
-    const users = await UserModel.find().populate(
-      'createdEvents'
-    );
+    const users = await UserModel.find().populate('createdEvents');
     return users.map(transformUser);
   } catch (err) {
     throw err;
@@ -24,20 +21,18 @@ exports.createUser = async ({ userInput }: { userInput: UserInput }) => {
       !(await UserModel.findOne({
         username: userInput.username,
         email: userInput.email
-      }))
+      }as UserInput))
     ) {
-      if (userInput) { }
-      let cryptedPassword: string;
-      if (userInput.password) {
-        cryptedPassword = await bcrypt.hash(userInput.password, 12);
+      if (!userInput.password) {
+        throw (new Error('no password was provided'));
       }
+      const cryptedPassword: string = await bcrypt.hash(userInput.password, 12);
       const newUser = new UserModel({
         username: userInput.username,
         lastSeen: Date(),
         email: userInput.email,
-        password: cryptedPassword,
-        createEvents: []
-      });
+        password: cryptedPassword
+      } as User);
       const result = await newUser.save();
       return transformUser(result);
     } else {
