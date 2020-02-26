@@ -1,13 +1,14 @@
 overwrite: true
-schema: "./src/schemas/type-defs.graphql"
+schema: './src/schemas/type-defs.graphql'
 documents: null
 generates:
   src/generated/graphql.d.ts:
     plugins:
-      - "typescript"
-      - "typescript-resolvers"
-      - "typescript-mongodb"
-      - "typescript-document-nodes"
+      - 'typescript'
+      - 'typescript-resolvers':
+      - 'typescript-document-nodes'
+    config:
+      useIndexSignature: true
   src/generated/graphql.schema.json:
     plugins:
-      - "introspection"
+      - 'introspection'

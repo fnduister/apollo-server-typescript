@@ -31,7 +31,7 @@ mongoose
   .then(() => {
     server
       .listen(environment.port)
-      .then(({ url }) => console.log(`Server ready at ${url}. `));
+      .then(({ url }: {url: string}) => console.log(`Server ready at ${url}. `));
   })
   .catch(err => {
     console.log(err);

@@ -21,20 +21,12 @@ type User @entity {
   """
   User's password.
   """
-  password: String! @column
+  password: String @column
 
   """
   Date last seen.
   """
-  lastSeen: DateTime! @column
-
-  """
-  User's last name.
-  """
-  lastName: String! @column(overrideType: "Date")
-
-  # User's e-mail address.
-  # email: TODO: Define type.
+  lastSeen: DateTime! @column(overrideType: "Date")
 
   """
   Posts published by user.
@@ -92,6 +84,21 @@ type Query {
   Get post by ID.
   """
   post(id: ID!): Post
+
+  """
+  Get post by ID.
+  """
+  posts(id: ID!): [Post]
+
+  """
+  Get post by ID.
+  """
+  user(id: ID!): User
+
+  """
+  Get post by ID.
+  """
+  users(id: ID!): [User]
 }
 
 """

@@ -13,19 +13,6 @@ export type Scalars = {
   UnsignedInt: any,
 };
 
-
-
-
-
-
-
-
-
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>,
-  type?: Maybe<Scalars['String']>,
-};
-
 export type AuthData = {
    __typename?: 'AuthData',
   /** jwt token for authentication. */
@@ -114,10 +101,31 @@ export type Query = {
    __typename?: 'Query',
   /** Get post by ID. */
   post?: Maybe<Post>,
+  /** Get post by ID. */
+  posts?: Maybe<Array<Maybe<Post>>>,
+  /** Get post by ID. */
+  user?: Maybe<User>,
+  /** Get post by ID. */
+  users?: Maybe<Array<Maybe<User>>>,
 };
 
 
 export type QueryPostArgs = {
+  id: Scalars['ID']
+};
+
+
+export type QueryPostsArgs = {
+  id: Scalars['ID']
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID']
+};
+
+
+export type QueryUsersArgs = {
   id: Scalars['ID']
 };
 
@@ -131,11 +139,9 @@ export type User = {
   /** User's email address. */
   email: Scalars['EmailAddress'],
   /** User's password. */
-  password: Scalars['String'],
+  password?: Maybe<Scalars['String']>,
   /** Date last seen. */
   lastSeen: Scalars['DateTime'],
-  /** User's last name. */
-  lastName: Scalars['String'],
   /** Posts published by user. */
   posts: Array<Maybe<Post>>,
   /** Users that this user is following. */
@@ -153,7 +159,8 @@ export type UserInput = {
   email: Scalars['String'],
 };
 
-
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -225,7 +232,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>;
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
   Post: ResolverTypeWrapper<Post>,
@@ -240,11 +247,10 @@ export type ResolversTypes = {
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   AuthData: ResolverTypeWrapper<AuthData>,
-  AdditionalEntityFields: AdditionalEntityFields,
-};
+}>;
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type ResolversParentTypes = ResolversObject<{
   Query: {},
   ID: Scalars['ID'],
   Post: Post,
@@ -259,50 +265,14 @@ export type ResolversParentTypes = {
   UnsignedInt: Scalars['UnsignedInt'],
   Boolean: Scalars['Boolean'],
   AuthData: AuthData,
-  AdditionalEntityFields: AdditionalEntityFields,
-};
+}>;
 
-export type UnionDirectiveArgs = {   discriminatorField?: Maybe<Scalars['String']>,
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>> };
-
-export type UnionDirectiveResolver<Result, Parent, ContextType = any, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type AbstractEntityDirectiveArgs = {   discriminatorField: Scalars['String'],
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>> };
-
-export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = any, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type EntityDirectiveArgs = {   embedded?: Maybe<Scalars['Boolean']>,
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>> };
-
-export type EntityDirectiveResolver<Result, Parent, ContextType = any, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type ColumnDirectiveArgs = {   overrideType?: Maybe<Scalars['String']> };
-
-export type ColumnDirectiveResolver<Result, Parent, ContextType = any, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type IdDirectiveArgs = {  };
-
-export type IdDirectiveResolver<Result, Parent, ContextType = any, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type LinkDirectiveArgs = {   overrideType?: Maybe<Scalars['String']> };
-
-export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type EmbeddedDirectiveArgs = {  };
-
-export type EmbeddedDirectiveResolver<Result, Parent, ContextType = any, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type MapDirectiveArgs = {   path: Scalars['String'] };
-
-export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type AuthDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthData'] = ResolversParentTypes['AuthData']> = {
+export type AuthDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthData'] = ResolversParentTypes['AuthData']> = ResolversObject<{
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   tokenExpiration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
-};
+}>;
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime'
@@ -312,15 +282,15 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
   name: 'EmailAddress'
 }
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'input'>>,
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationCreateUserArgs>,
   followUser?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationFollowUserArgs, 'userId'>>,
   unfollowUser?: Resolver<ResolversTypes['UnsignedInt'], ParentType, ContextType, RequireFields<MutationUnfollowUserArgs, 'userId'>>,
   likePost?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationLikePostArgs, 'postId'>>,
-};
+}>;
 
-export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
+export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -328,30 +298,32 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   publishedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>,
   likedBy?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
-};
+}>;
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>,
-};
+  posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, RequireFields<QueryPostsArgs, 'id'>>,
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>,
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<QueryUsersArgs, 'id'>>,
+}>;
 
 export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedInt'], any> {
   name: 'UnsignedInt'
 }
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>,
-  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   lastSeen?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   posts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>,
   following?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>,
   followers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
-};
+}>;
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = any> = ResolversObject<{
   AuthData?: AuthDataResolvers<ContextType>,
   DateTime?: GraphQLScalarType,
   EmailAddress?: GraphQLScalarType,
@@ -360,7 +332,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>,
   UnsignedInt?: GraphQLScalarType,
   User?: UserResolvers<ContextType>,
-};
+}>;
 
 
 /**
@@ -368,43 +340,5 @@ export type Resolvers<ContextType = any> = {
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
 */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
-export type DirectiveResolvers<ContextType = any> = {
-  union?: UnionDirectiveResolver<any, any, ContextType>,
-  abstractEntity?: AbstractEntityDirectiveResolver<any, any, ContextType>,
-  entity?: EntityDirectiveResolver<any, any, ContextType>,
-  column?: ColumnDirectiveResolver<any, any, ContextType>,
-  id?: IdDirectiveResolver<any, any, ContextType>,
-  link?: LinkDirectiveResolver<any, any, ContextType>,
-  embedded?: EmbeddedDirectiveResolver<any, any, ContextType>,
-  map?: MapDirectiveResolver<any, any, ContextType>,
-};
-
-
-/**
-* @deprecated
-* Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
-*/
-export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<ContextType>;
-import { ObjectID } from 'mongodb';
-export type PostDbObject = {
-  _id: ObjectID,
-  title: string,
-  content: string,
-  author: UserDbObject['_id'],
-  publishedAt?: Date,
-  likedBy?: Maybe<Array<Maybe<UserDbObject['_id']>>>,
-};
-
-export type UserDbObject = {
-  _id: ObjectID,
-  username: string,
-  email: string,
-  password: string,
-  lastSeen: any,
-  lastName: Date,
-  posts: Array<Maybe<PostDbObject['_id']>>,
-  following: Array<Maybe<UserDbObject['_id']>>,
-  followers: Array<Maybe<UserDbObject['_id']>>,
-};
 
 import gql from 'graphql-tag';
