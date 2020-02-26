@@ -68,7 +68,7 @@ type Post @entity {
   """
   Post published timestamp.
   """
-  publishedAt: DateTime @column(overrideType: "Date")
+  publishedAt: DateTime! @column(overrideType: "Date")
 
   # Post published timestamp.
   # publishedAt: TODO: Define type.
@@ -154,7 +154,7 @@ type Mutation {
   """
   Publish post.
   """
-  publishPost(input: PublishPostInput!): Post!
+  publishPost(postInput: PublishPostInput!): Post!
 
   """
   create new user.

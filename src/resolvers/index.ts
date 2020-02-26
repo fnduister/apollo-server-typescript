@@ -4,17 +4,24 @@ import {
   UnsignedIntResolver
 } from 'graphql-scalars';
 import * as userResolvers from './userResolver';
-import { Resolvers, MutationResolvers } from '../generated/graphql';
+import * as postResolvers from './postResolver';
+import { Resolvers, MutationResolvers, QueryResolvers } from '../generated/graphql';
 
 const mutationResolvers: MutationResolvers = {
-  ...userResolvers
+  ...userResolvers,
+  ...postResolvers
+}
+
+const queryResolvers: QueryResolvers = {
+  // ...userResolvers
 }
 
 const resolvers:Resolvers = {
   DateTime: DateTimeResolver,
   EmailAddress: EmailAddressResolver,
   UnsignedInt: UnsignedIntResolver,
-  Mutation: mutationResolvers
+  Mutation: mutationResolvers,
+  Query: queryResolvers
 };
 
 export default resolvers;

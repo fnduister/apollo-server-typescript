@@ -219,9 +219,13 @@
             "description": "Post published timestamp.",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "DateTime",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTime",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -435,7 +439,7 @@
             "description": "Publish post.",
             "args": [
               {
-                "name": "input",
+                "name": "postInput",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",

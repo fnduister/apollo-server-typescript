@@ -27,23 +27,23 @@ const userSchema = new Schema({
   posts: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'PostModel'
+      ref: 'Post'
     }
   ],
   following: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'UserModel'
+      ref: 'User'
     }
   ],
   followers: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'UserModel'
+      ref: 'User'
     }
   ]
 });
 
 export interface UserDb extends Omit<User, 'id'>, Document{
 };
-export default mongoose.model<UserDb>('UserModel', userSchema);
+export default mongoose.model<UserDb>('User', userSchema);

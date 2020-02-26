@@ -44,8 +44,7 @@ export const createUser = async (
         following: []
       };
       const newUser = new UserModel(infoUser);
-      const result = await newUser.save();
-      return result as User;
+      return await newUser.save() as User;
     } else {
       throw new Error('user already exist');
     }

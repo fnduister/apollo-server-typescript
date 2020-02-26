@@ -50,7 +50,7 @@ export type Mutation = {
 
 
 export type MutationPublishPostArgs = {
-  input: PublishPostInput
+  postInput: PublishPostInput
 };
 
 
@@ -84,7 +84,7 @@ export type Post = {
   /** Post Author. */
   author: User,
   /** Post published timestamp. */
-  publishedAt?: Maybe<Scalars['DateTime']>,
+  publishedAt: Scalars['DateTime'],
   /** Users who like this post. */
   likedBy?: Maybe<Array<Maybe<User>>>,
 };
@@ -283,7 +283,7 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'input'>>,
+  publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'postInput'>>,
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationCreateUserArgs>,
   followUser?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationFollowUserArgs, 'userId'>>,
   unfollowUser?: Resolver<ResolversTypes['UnsignedInt'], ParentType, ContextType, RequireFields<MutationUnfollowUserArgs, 'userId'>>,
@@ -295,7 +295,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
-  publishedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>,
+  publishedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
   likedBy?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 }>;

@@ -23,15 +23,15 @@ const postSchema = new Schema({
   likedBy: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'UserModel'
+      ref: 'User'
     }
   ],
 
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'UserModel'
+    ref: 'User'
   }
 });
 
 export interface PostDb extends Omit<Post, 'id'>, Document {};
-export default mongoose.model<PostDb>('PostModel', postSchema);
+export default mongoose.model<PostDb>('Post', postSchema);
