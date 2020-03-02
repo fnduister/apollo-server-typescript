@@ -157,6 +157,11 @@ type Mutation {
   publishPost(postInput: PublishPostInput!): Post!
 
   """
+  login user.
+  """
+  login(username: String!, password: String!): AuthData!
+
+  """
   create new user.
   """
   createUser(userInput: UserInput): User

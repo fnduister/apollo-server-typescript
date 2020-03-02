@@ -4,6 +4,7 @@ import environment from './environment';
 import * as typeDefs from './schemas/type-defs.graphql';
 import resolvers from './resolvers';
 import mongoose from 'mongoose';
+import { retrieveUser } from './resolvers/helpers';
 import {
   DateTimeMock,
   EmailAddressMock,
@@ -20,7 +21,17 @@ const server = new ApolloServer({
     UnsignedInt: UnsignedIntMock
   }, // TODO: Remove in PROD.
   mockEntireSchema: false, // TODO: Remove in PROD.
-  playground: environment.apollo.playground
+  playground: environment.apollo.playground,
+  context: ({ req }) => {
+    const tokenWithBearer = req.headers.authorization || '';
+    const token = tokenWithBearer.split(' ')[1];
+
+    // try to retrieve a user with the token
+    const user = retrieveUser(token);
+
+    // add the user to the context
+    return { user };
+  }
 });
 
 mongoose

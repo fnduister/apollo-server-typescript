@@ -3,13 +3,14 @@ import {
   EmailAddressResolver,
   UnsignedIntResolver
 } from 'graphql-scalars';
-import * as userResolvers from './userResolver';
-import * as postResolvers from './postResolver';
+import { createUser, login } from './userResolver';
+import { publishPost } from './postResolver';
 import { Resolvers, MutationResolvers, QueryResolvers } from '../generated/graphql';
 
 const mutationResolvers: MutationResolvers = {
-  ...userResolvers,
-  ...postResolvers
+  createUser,
+  login,
+  publishPost
 }
 
 const queryResolvers: QueryResolvers = {

@@ -8,7 +8,8 @@ interface Environment {
   port: number | string;
   mongoUsername: string| undefined;
   mongoPassword: string| undefined;
-  mongoDatabaseName: string| undefined;
+  mongoDatabaseName: string | undefined;
+  passwordDecripter: string | undefined;
 }
 
 const environment: Environment = {
@@ -19,7 +20,8 @@ const environment: Environment = {
   port: process.env.PORT || defaultPort,
   mongoUsername: process.env.MONGO_USER,
   mongoPassword: process.env.MONGO_PASSWORD,
-  mongoDatabaseName: process.env.MONGO_DB_NAME
+  mongoDatabaseName: process.env.MONGO_DB_NAME,
+  passwordDecripter: process.env.PASSWORD_DECRIPTER
 };
 
 export default environment;

@@ -33,5 +33,6 @@ const postSchema = new Schema({
   }
 });
 
-export interface PostDb extends Omit<Post, 'id'>, Document {};
+export type PostOmitId = Omit<Post, 'id'>;
+export interface PostDb extends PostOmitId, Document {};
 export default mongoose.model<PostDb>('Post', postSchema);

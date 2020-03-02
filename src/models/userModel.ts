@@ -44,6 +44,7 @@ const userSchema = new Schema({
   ]
 });
 
-export interface UserDb extends Omit<User, 'id'>, Document{
+export type UserOmitId = Omit<User, 'id'>;
+export interface UserDb extends UserOmitId, Document{
 };
 export default mongoose.model<UserDb>('User', userSchema);

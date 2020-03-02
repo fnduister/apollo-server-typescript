@@ -29,6 +29,8 @@ export type Mutation = {
    __typename?: 'Mutation',
   /** Publish post. */
   publishPost: Post,
+  /** login user. */
+  login: AuthData,
   /** create new user. */
   createUser?: Maybe<User>,
   /** 
@@ -51,6 +53,12 @@ export type Mutation = {
 
 export type MutationPublishPostArgs = {
   postInput: PublishPostInput
+};
+
+
+export type MutationLoginArgs = {
+  username: Scalars['String'],
+  password: Scalars['String']
 };
 
 
@@ -242,11 +250,11 @@ export type ResolversTypes = ResolversObject<{
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>,
   Mutation: ResolverTypeWrapper<{}>,
   PublishPostInput: PublishPostInput,
-  UserInput: UserInput,
+  AuthData: ResolverTypeWrapper<AuthData>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
+  UserInput: UserInput,
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-  AuthData: ResolverTypeWrapper<AuthData>,
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -260,11 +268,11 @@ export type ResolversParentTypes = ResolversObject<{
   DateTime: Scalars['DateTime'],
   Mutation: {},
   PublishPostInput: PublishPostInput,
-  UserInput: UserInput,
+  AuthData: AuthData,
   Int: Scalars['Int'],
+  UserInput: UserInput,
   UnsignedInt: Scalars['UnsignedInt'],
   Boolean: Scalars['Boolean'],
-  AuthData: AuthData,
 }>;
 
 export type AuthDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthData'] = ResolversParentTypes['AuthData']> = ResolversObject<{
@@ -284,6 +292,7 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'postInput'>>,
+  login?: Resolver<ResolversTypes['AuthData'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'username' | 'password'>>,
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationCreateUserArgs>,
   followUser?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationFollowUserArgs, 'userId'>>,
   unfollowUser?: Resolver<ResolversTypes['UnsignedInt'], ParentType, ContextType, RequireFields<MutationUnfollowUserArgs, 'userId'>>,
