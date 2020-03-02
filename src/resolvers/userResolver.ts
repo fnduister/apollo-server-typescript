@@ -1,4 +1,4 @@
-import { UserInput, MutationCreateUserArgs, AuthData, MutationLoginArgs, User } from '../generated/graphql';
+import { UserInput, MutationCreateUserArgs, AuthData, MutationLoginArgs } from '../generated/graphql';
 import bcrypt from 'bcryptjs';
 
 import UserModel, { UserOmitId, UserDb } from '../models/userModel';

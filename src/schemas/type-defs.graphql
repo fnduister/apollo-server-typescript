@@ -6,7 +6,7 @@ type User @entity {
   """
   User ID.
   """
-  id: ID! @id
+  id: ID @id
 
   """
   User's username.
@@ -48,7 +48,7 @@ type Post @entity {
   """
   Post ID.
   """
-  id: ID! @id
+  id: ID @id
 
   """
   Post title.

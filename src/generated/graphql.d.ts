@@ -84,7 +84,7 @@ export type MutationLikePostArgs = {
 export type Post = {
    __typename?: 'Post',
   /** Post ID. */
-  id: Scalars['ID'],
+  id?: Maybe<Scalars['ID']>,
   /** Post title. */
   title: Scalars['String'],
   /** Post content. */
@@ -141,7 +141,7 @@ export type QueryUsersArgs = {
 export type User = {
    __typename?: 'User',
   /** User ID. */
-  id: Scalars['ID'],
+  id?: Maybe<Scalars['ID']>,
   /** User's username. */
   username: Scalars['String'],
   /** User's email address. */
@@ -300,7 +300,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
@@ -321,7 +321,7 @@ export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<Resolve
 }
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>,
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>,
   password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
