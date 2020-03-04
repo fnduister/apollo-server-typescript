@@ -1,17 +1,59 @@
-import { UserInput, MutationCreateUserArgs, AuthData, MutationLoginArgs } from '../generated/graphql';
+import {
+  UserInput,
+  MutationCreateUserArgs,
+  AuthData,
+  MutationLoginArgs,
+  QueryUserArgs,
+  User,
+  UserResolvers
+} from '../generated/graphql';
 import bcrypt from 'bcryptjs';
 
 import UserModel, { UserOmitId, UserDb } from '../models/userModel';
 import jwt from 'jsonwebtoken';
 
-// import transformUser from './merge';
-// import { UserDb } from './../models/userModel';
 import environment from './../environment';
+import { Model } from './../models/index';
+import { dateToString } from './helpers';
+import { Context } from './../main.d';
 
-export const users = async (userIds: string[]) => {
+export const UserTransformResolvers: UserResolvers = {
+  lastSeen: ({ lastSeen }: User) => { console.log(dateToString(lastSeen)); return dateToString(lastSeen) },
+  posts: async ({ posts }: User, _args, { models }: Context) => {
+    const foundPosts = models.Post.find({ _id: { $in: posts } });
+    console.log('TCL: foundPosts', foundPosts)
+    return Promise.resolve(foundPosts);
+  },
+  following: async ({ following }: User, _args, { loaders }) => {
+    return loaders.post.load(following);
+  },
+  followers: async ({ followers }: User, _args, { loaders }) => {
+    return loaders.post.load(followers);
+  }
+};
+
+export const batchUsers = async (keys: readonly unknown[], models: Model) => {
+  const users: UserDb[] = await models.User.find({ _id: { $in: keys } });
+  return keys.map(key => users.find(user => user.id === key));
+};
+
+export const user = async (_parent: any, { id }: QueryUserArgs, { models }:{models: Model}): Promise<UserDb> => {
   try {
-    const users = await UserModel.find({ _id: { $in: userIds } });
-    return Promise.resolve(users);
+    const foundUser = await models.User.findById(id);
+    if (!foundUser) {
+      throw new Error("this user doesn't exit!!");
+    }
+    return Promise.resolve(foundUser);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+export const users = async (): Promise<UserDb[]> => {
+  try {
+    const foundUsers = await UserModel.find();
+    return Promise.resolve(foundUsers);
   } catch (err) {
     console.error(err);
     throw err;
@@ -62,7 +104,6 @@ export const login = async (
 ): Promise<AuthData> => {
   try {
     const currentUser = await UserModel.findOne({ username });
-    console.log('TCL: currentUser', currentUser);
     if (!currentUser) {
       throw new Error('username or password not valid');
     }

@@ -110,11 +110,11 @@ export type Query = {
   /** Get post by ID. */
   post?: Maybe<Post>,
   /** Get post by ID. */
-  posts?: Maybe<Array<Maybe<Post>>>,
+  posts: Array<Maybe<Post>>,
   /** Get post by ID. */
   user?: Maybe<User>,
   /** Get post by ID. */
-  users?: Maybe<Array<Maybe<User>>>,
+  users: Array<Maybe<User>>,
 };
 
 
@@ -123,17 +123,7 @@ export type QueryPostArgs = {
 };
 
 
-export type QueryPostsArgs = {
-  id: Scalars['ID']
-};
-
-
 export type QueryUserArgs = {
-  id: Scalars['ID']
-};
-
-
-export type QueryUsersArgs = {
   id: Scalars['ID']
 };
 
@@ -311,9 +301,9 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>,
-  posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, RequireFields<QueryPostsArgs, 'id'>>,
+  posts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>,
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>,
-  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<QueryUsersArgs, 'id'>>,
+  users?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>,
 }>;
 
 export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedInt'], any> {

@@ -88,7 +88,7 @@ type Query {
   """
   Get post by ID.
   """
-  posts(id: ID!): [Post]
+  posts: [Post]!
 
   """
   Get post by ID.
@@ -98,7 +98,7 @@ type Query {
   """
   Get post by ID.
   """
-  users(id: ID!): [User]
+  users: [User]!
 }
 
 """
@@ -198,4 +198,12 @@ type Mutation {
     """
     postId: ID!
   ): Int!
+
+  # extend type Subscription {
+  #   postPublished: PostPublished!
+  # }
+
+  # type PostPublished {
+  #   post: Post!
+  # }
 }

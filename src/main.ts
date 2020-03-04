@@ -10,6 +10,11 @@ import {
   EmailAddressMock,
   UnsignedIntMock
 } from 'graphql-scalars';
+import models from './models';
+import DataLoader from 'dataloader';
+import { batchUsers } from './resolvers/userResolver';
+import { batchPosts } from './resolvers/postResolver';
+import { JWTResponse } from './main.d';
 
 const server = new ApolloServer({
   resolvers,
@@ -27,10 +32,18 @@ const server = new ApolloServer({
     const token = tokenWithBearer.split(' ')[1];
 
     // try to retrieve a user with the token
-    const user = retrieveUser(token);
+    const user: null | JWTResponse = retrieveUser(token);
+    // console.log('TCL: user', user);
 
     // add the user to the context
-    return { user };
+    return {
+      user,
+      models,
+      loaders: {
+        user: new DataLoader(keys => batchUsers(keys, models)),
+        post: new DataLoader(keys => batchPosts(keys, models))
+      }
+    };
   }
 });
 
