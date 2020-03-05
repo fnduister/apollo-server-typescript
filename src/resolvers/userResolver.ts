@@ -5,7 +5,10 @@ import {
   MutationLoginArgs,
   QueryUserArgs,
   User,
-  UserResolvers
+  UserResolvers,
+  MutationFollowUserArgs,
+  MutationUnfollowUserArgs,
+  MutationLikePostArgs
 } from '../generated/graphql';
 import bcrypt from 'bcryptjs';
 
@@ -20,21 +23,30 @@ import { Context } from './../main.d';
 export const UserTransformResolvers: UserResolvers = {
   lastSeen: ({ lastSeen }: User) => { console.log(dateToString(lastSeen)); return dateToString(lastSeen) },
   posts: async ({ posts }: User, _args, { models }: Context) => {
-    const foundPosts = models.Post.find({ _id: { $in: posts } });
-    console.log('TCL: foundPosts', foundPosts)
+    const foundPosts = await models.Post.find({ _id: { $in: posts } });
     return Promise.resolve(foundPosts);
   },
-  following: async ({ following }: User, _args, { loaders }) => {
-    return loaders.post.load(following);
+  following: async ({ following }: User, _args, { models }) => {
+    const foundFollowing = await models.User.find({ _id: { $in: following } });
+    return Promise.resolve(foundFollowing);
   },
-  followers: async ({ followers }: User, _args, { loaders }) => {
-    return loaders.post.load(followers);
+  followers: async ({ followers }: User, _args, { models }) => {
+    const foundFollowers = await models.User.find({ _id: { $in: followers } });
+    return Promise.resolve(foundFollowers);
   }
 };
 
 export const batchUsers = async (keys: readonly unknown[], models: Model) => {
-  const users: UserDb[] = await models.User.find({ _id: { $in: keys } });
-  return keys.map(key => users.find(user => user.id === key));
+  try {
+    const users: UserDb[] = await models.User.find({ _id: { $in: keys } });
+    if (!users) {
+      throw new Error('no users was found with those ids');
+    }
+    return keys.map(key => users.find(user => user.id === key));
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
 
 export const user = async (_parent: any, { id }: QueryUserArgs, { models }:{models: Model}): Promise<UserDb> => {
@@ -96,6 +108,101 @@ export const createUser = async (
     console.log(err);
     throw err;
   }
+};
+
+export const follow = async (_parent: any, { userId }:MutationFollowUserArgs, { user, models }: Context) => {
+  if (!user) {
+    throw new Error('you need to be connected to follow someone');
+  }
+  if (user.userId === userId) {
+    throw new Error("you can't unfollow yourself");
+  }
+
+  // test if you're already following that user.
+  // if ()) {
+  //   throw new Error('you\'re already following that user ');
+  // };
+
+  const userToFollow = await models.User.findOneAndUpdate(
+    { _id: userId },
+    { $push: { followers: user.userId } }
+  );
+
+  if (!userToFollow) {
+    throw new Error('no user found');
+  }
+
+  await models.User.update(
+    { _id: user.userId },
+    { $push: { following: userToFollow.id } },
+    {
+      new: true
+    }
+  );
+
+  return userToFollow.followers.length;
+}
+
+/**
+ * @param {*} _parent
+ * @param {MutationUnfollowUserArgs} { userId }
+ * @param {Context} { user, models }
+ * @returns how many poeple are following
+ */
+export const unfollow = async (
+  _parent: any,
+  { userId }: MutationUnfollowUserArgs,
+  { user, models }: Context
+) => {
+  if (!user) {
+    throw new Error('you need to be connected to unfollow someone');
+  }
+  if (user.userId === userId) {
+    throw new Error('you can\'t unfollow yourself');
+  }
+  const userToUnfollow = await models.User.findOneAndUpdate(
+    { _id: userId },
+    { $pull: { followers: user.userId } }
+  );
+
+  if (!userToUnfollow) {
+    throw new Error('this user does not exist anymore: ' + userId);
+  };
+
+  await models.User.update(
+    { _id: user.userId },
+    { $pull: { following: userToUnfollow.id } },
+    {
+      new: true
+    }
+  );
+
+  return userToUnfollow.followers.length;
+};
+
+// likePost who can like the posts
+export const likePost = async (
+  _parent: any,
+  { postId }: MutationLikePostArgs,
+  { user, models }: Context
+) => {
+  if (!user) {
+    throw new Error('you need to be connected to like a post');
+  }
+
+  const postToLike = await models.Post.findOneAndUpdate(
+    { _id: postId },
+    { $push: { likedBy: user.userId } },
+    {
+      new: true
+    }
+  );
+
+  if (!postToLike) {
+    throw new Error('this post does not exist anymore: ' + postId);
+  }
+
+  return postToLike.likedBy.length;
 };
 
 export const login = async (

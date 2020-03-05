@@ -94,7 +94,7 @@ export type Post = {
   /** Post published timestamp. */
   publishedAt: Scalars['DateTime'],
   /** Users who like this post. */
-  likedBy?: Maybe<Array<Maybe<User>>>,
+  likedBy: Array<Maybe<User>>,
 };
 
 /** Publish post input. */
@@ -295,7 +295,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
   publishedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  likedBy?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
+  likedBy?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 }>;
 

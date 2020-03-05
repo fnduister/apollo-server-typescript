@@ -7,6 +7,9 @@ import {
   createUser,
   login,
   users,
+  follow,
+  likePost,
+  unfollow,
   user,
   UserTransformResolvers
 } from './userResolver';
@@ -16,7 +19,10 @@ import { Resolvers, MutationResolvers, QueryResolvers } from '../generated/graph
 const mutationResolvers: MutationResolvers = {
   createUser,
   login,
-  publishPost
+  publishPost,
+  followUser: follow,
+  unfollowUser: unfollow,
+  likePost
 }
 
 const queryResolvers: QueryResolvers = {
