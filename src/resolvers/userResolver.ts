@@ -180,7 +180,12 @@ export const unfollow = async (
   return userToUnfollow.followers.length;
 };
 
-// likePost who can like the posts
+/**
+ * @param {*} _parent
+ * @param {MutationLikePostArgs} { postId }
+ * @param {Context} { user, models }
+ * @returns the amount of likes from the post
+ */
 export const likePost = async (
   _parent: any,
   { postId }: MutationLikePostArgs,
@@ -205,6 +210,11 @@ export const likePost = async (
   return postToLike.likedBy.length;
 };
 
+/**
+ * @param {*} _parent
+ * @param {MutationLoginArgs} { username, password }
+ * @returns {Promise<AuthData>}
+ */
 export const login = async (
   _parent: any
   , { username, password }: MutationLoginArgs
