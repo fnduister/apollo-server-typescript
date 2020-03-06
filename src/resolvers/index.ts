@@ -13,7 +13,7 @@ import {
   user,
   UserTransformResolvers
 } from './userResolver';
-import { publishPost } from './postResolver';
+import { publishPost, PostTransformResolvers, posts, post } from './postResolver';
 import { Resolvers, MutationResolvers, QueryResolvers } from '../generated/graphql';
 
 const mutationResolvers: MutationResolvers = {
@@ -27,7 +27,7 @@ const mutationResolvers: MutationResolvers = {
 
 const queryResolvers: QueryResolvers = {
   // ...userResolvers
-  users, user
+  users, user, posts, post
 };
 
 const resolvers: Resolvers = {
@@ -36,7 +36,8 @@ const resolvers: Resolvers = {
   UnsignedInt: UnsignedIntResolver,
   Mutation: mutationResolvers,
   Query: queryResolvers,
-  User: UserTransformResolvers
+  User: UserTransformResolvers,
+  Post: PostTransformResolvers
 };
 
 export default resolvers;

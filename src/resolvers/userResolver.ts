@@ -26,11 +26,11 @@ export const UserTransformResolvers: UserResolvers = {
     const foundPosts = await models.Post.find({ _id: { $in: posts } });
     return Promise.resolve(foundPosts);
   },
-  following: async ({ following }: User, _args, { models }) => {
+  following: async ({ following }: User, _args, { models }: Context) => {
     const foundFollowing = await models.User.find({ _id: { $in: following } });
     return Promise.resolve(foundFollowing);
   },
-  followers: async ({ followers }: User, _args, { models }) => {
+  followers: async ({ followers }: User, _args, { models }: Context) => {
     const foundFollowers = await models.User.find({ _id: { $in: followers } });
     return Promise.resolve(foundFollowers);
   }
@@ -39,6 +39,7 @@ export const UserTransformResolvers: UserResolvers = {
 export const batchUsers = async (keys: readonly unknown[], models: Model) => {
   try {
     const users: UserDb[] = await models.User.find({ _id: { $in: keys } });
+    console.log('TCL: batchUsers -> users', users)
     if (!users) {
       throw new Error('no users was found with those ids');
     }
@@ -125,7 +126,7 @@ export const follow = async (_parent: any, { userId }:MutationFollowUserArgs, { 
 
   const userToFollow = await models.User.findOneAndUpdate(
     { _id: userId },
-    { $push: { followers: user.userId } }
+    { $addToSet: { followers: user.userId } }, { new: true }
   );
 
   if (!userToFollow) {
@@ -134,10 +135,8 @@ export const follow = async (_parent: any, { userId }:MutationFollowUserArgs, { 
 
   await models.User.update(
     { _id: user.userId },
-    { $push: { following: userToFollow.id } },
-    {
-      new: true
-    }
+    { $addToSet: { following: userToFollow.id } }
+
   );
 
   return userToFollow.followers.length;
@@ -162,7 +161,10 @@ export const unfollow = async (
   }
   const userToUnfollow = await models.User.findOneAndUpdate(
     { _id: userId },
-    { $pull: { followers: user.userId } }
+    { $pull: { followers: user.userId } },
+    {
+      new: true
+    }
   );
 
   if (!userToUnfollow) {
@@ -171,10 +173,8 @@ export const unfollow = async (
 
   await models.User.update(
     { _id: user.userId },
-    { $pull: { following: userToUnfollow.id } },
-    {
-      new: true
-    }
+    { $pull: { following: userToUnfollow.id } }
+
   );
 
   return userToUnfollow.followers.length;
@@ -197,7 +197,7 @@ export const likePost = async (
 
   const postToLike = await models.Post.findOneAndUpdate(
     { _id: postId },
-    { $push: { likedBy: user.userId } },
+    { $addToSet: { likedBy: user.userId } },
     {
       new: true
     }

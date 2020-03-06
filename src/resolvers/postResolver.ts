@@ -1,4 +1,4 @@
-import { Post, PublishPostInput, PostResolvers } from '../generated/graphql';
+import { Post, PublishPostInput, PostResolvers, QueryPostArgs } from '../generated/graphql';
 import PostModel, { PostDb, PostOmitId } from '../models/postModel';
 import { Model } from './../models/index';
 import { dateToString } from './helpers';
@@ -7,16 +7,46 @@ import { UserDb } from '../models/userModel';
 
 export const PostTransformResolvers: PostResolvers = {
   publishedAt: ({ publishedAt }: Post) => dateToString(publishedAt),
-  author: async ({ author }: Post, _args, { loaders }) => {
-    return loaders.user.load(author);
+  author: async ({ author }: Post, _args: any, { loaders }: Context) => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      console.log('TCL: author', author)
+      const user = await loaders.user.load(author);
+      if (!user) {
+        throw new Error('no user was found');
+      }
+      return Promise.resolve(user);
+    } catch (err) {
+      // console.error(err);
+      throw err;
+    };
   },
-  likedBy: async ({ likedBy }: Post, _args, { loaders }) => {
-    return loaders.user.load(likedBy);
+  likedBy: async ({ likedBy }: Post, _args, { models }: Context) => {
+    try {
+      const usersLiked = await models.User.find({ _id: { $in: likedBy } });
+      if (!usersLiked) {
+        throw new Error('no one likes you');
+      }
+      return usersLiked;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   }
 };
 
-export const posts = async (postIds: string[]): Promise<PostDb[]> => {
-  const posts = await PostModel.find({ _id: { $in: postIds } });
+export const post = async (_: any, { id }: QueryPostArgs, { models }: Context) => {
+  try {
+    const post = await models.Post.findOne(id);
+    return Promise.resolve(post);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+export const posts = async (_: any, __: any, { models }: Context): Promise<PostDb[]> => {
+  const posts = await models.Post.find();
   return Promise.resolve(posts);
 }
 

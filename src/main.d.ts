@@ -7,7 +7,7 @@ import { AuthData } from './generated/graphql';
 export interface Context {
   user: JWTResponse | null;
   models: Model;
-  loader: Loaders;
+  loaders: Loaders;
 }
 
 export interface Loaders {

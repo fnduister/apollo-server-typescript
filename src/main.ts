@@ -50,12 +50,19 @@ const server = new ApolloServer({
 mongoose
   .connect(
     `mongodb+srv://${environment.mongoUsername}:${environment.mongoPassword}@graphql-demo-wyowx.mongodb.net/${environment.mongoDatabaseName}?retryWrites=true&w=majority`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      autoIndex: true
+    }
   )
   .then(() => {
     server
       .listen(environment.port)
-      .then(({ url }: {url: string}) => console.log(`Server ready at ${url}. `));
+      .then(({ url }: { url: string }) =>
+        console.log(`Server ready at ${url}. `)
+      );
   })
   .catch(err => {
     console.log(err);
