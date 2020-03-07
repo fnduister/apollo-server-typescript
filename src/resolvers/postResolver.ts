@@ -10,7 +10,6 @@ export const PostTransformResolvers: PostResolvers = {
   author: async ({ author }: Post, _args: any, { loaders }: Context) => {
     // eslint-disable-next-line no-useless-catch
     try {
-      console.log('TCL: author', author)
       const user = await loaders.user.load(author);
       if (!user) {
         throw new Error('no user was found');
@@ -52,7 +51,7 @@ export const posts = async (_: any, __: any, { models }: Context): Promise<PostD
 
 export const batchPosts = async (keys: readonly unknown[], models: Model) => {
   const posts: PostDb[] = await models.Post.find({ _id: { $in: keys } });
-  return keys.map(key => posts.find(post => post.id === key));
+  return posts;
 };
 
 export const publishPost = async (

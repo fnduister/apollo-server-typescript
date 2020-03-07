@@ -19,31 +19,57 @@ import environment from './../environment';
 import { Model } from './../models/index';
 import { dateToString } from './helpers';
 import { Context } from './../main.d';
+import { PostDb } from '../models/postModel';
 
 export const UserTransformResolvers: UserResolvers = {
   lastSeen: ({ lastSeen }: User) => { console.log(dateToString(lastSeen)); return dateToString(lastSeen) },
-  posts: async ({ posts }: User, _args, { models }: Context) => {
-    const foundPosts = await models.Post.find({ _id: { $in: posts } });
-    return Promise.resolve(foundPosts);
+  posts: async ({ posts, id }: User, _args, { loaders }: Context) => {
+    try {
+      const foundPosts = await loaders.post.loadMany(posts) as PostDb[];
+      if (!foundPosts) {
+        throw new Error('post not found for user: ' + id);
+      }
+      return Promise.resolve(foundPosts);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   },
-  following: async ({ following }: User, _args, { models }: Context) => {
-    const foundFollowing = await models.User.find({ _id: { $in: following } });
-    return Promise.resolve(foundFollowing);
+  following: async ({ following, id }: User, _args, { loaders }: Context) => {
+    try {
+      const foundFollowing = (await loaders.user.loadMany(following) as UserDb[]);
+      if (!foundFollowing) {
+        throw new Error('following not found for user: ' + id);
+      }
+      return Promise.resolve(foundFollowing);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   },
-  followers: async ({ followers }: User, _args, { models }: Context) => {
-    const foundFollowers = await models.User.find({ _id: { $in: followers } });
-    return Promise.resolve(foundFollowers);
+  followers: async ({ followers, id }: User, _args, { loaders }: Context) => {
+    try {
+      const foundFollowers = (await loaders.user.loadMany(
+        followers
+      )) as UserDb[];
+      if (!foundFollowers) {
+        throw new Error('followers not found for user: ' + id);
+      }
+      return Promise.resolve(foundFollowers);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 };
 
 export const batchUsers = async (keys: readonly unknown[], models: Model) => {
   try {
     const users: UserDb[] = await models.User.find({ _id: { $in: keys } });
-    console.log('TCL: batchUsers -> users', users)
     if (!users) {
       throw new Error('no users was found with those ids');
     }
-    return keys.map(key => users.find(user => user.id === key));
+    return users;
   } catch (err) {
     console.error(err);
     throw err;
