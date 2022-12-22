@@ -56,7 +56,7 @@
     "graphql-config": "^3.0.0-alpha.17",
     "graphql-scalars": "^1.0.6",
     "graphql-tools": "^4.0.7",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "^3.5.3",
     "mongoose": "^5.8.11"
   },
